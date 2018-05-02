@@ -16,12 +16,10 @@ public class Gun : MonoBehaviour {
 
     bool triggerReleased;
     int burstShotsRemaining;
+
     [Header("Effects")]
-    public Transform shell;
-    public Transform shellEjection;
     public AudioClip shootAudio;
     public AudioClip reloadAudio;
-
     MuzzleFlash muzzleflash;
     float shotInterval;
 
@@ -29,6 +27,7 @@ public class Gun : MonoBehaviour {
     Vector3 recoilSmoothDampVelocity; //for recoil may remove if i don't want recoil
     float recoilAngle; //for recoil up remove if i dont want
     float recoilRotSmoothDampVelocity; //for recoil up remove if i dont want
+
     [Header("Recoil")]
     public Vector2 minMaxKickBack = new Vector2(.05f, .2f); //max min rand range for kickback
     public Vector2 minMaxRecoil = new Vector2(3.0f, 5.0f); //max min rand range for kickback
@@ -93,7 +92,6 @@ public class Gun : MonoBehaviour {
                 Projectile newProjectile = Instantiate(projectile, projectileSpawn[i].position, projectileSpawn[i].rotation) as Projectile; //breaks game here and doesn't play sound but won't be a problem when i remove guns changing per round and change audio still very weird error
                 newProjectile.setSpeed(muzzleVelocity);
             }
-            Instantiate(shell, shellEjection.position, shellEjection.rotation);
             muzzleflash.activate();
 
             transform.localPosition -= Vector3.forward * Random.Range(minMaxKickBack.x, minMaxKickBack.y); //for recoil but may remove if i don't want
@@ -106,8 +104,7 @@ public class Gun : MonoBehaviour {
             shotInterval = Time.time + rateOfFire / 1000;
             Projectile newProjectile = Instantiate(projectile, projectileSpawn.position, projectileSpawn.rotation) as Projectile;
             newProjectile.setSpeed(muzzleVelocity);
-
-            Instantiate(shell, shellEjection.position, shellEjection.rotation);
+            
             muzzleflash.activate();*/
         }
     }

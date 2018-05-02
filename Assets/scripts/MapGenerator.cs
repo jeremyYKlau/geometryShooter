@@ -177,8 +177,7 @@ public class MapGenerator : MonoBehaviour {
     {
         return new Vector3(-currentMap.mapSize.x / 2f + 0.5f + x, 0, -currentMap.mapSize.y / 2f + 0.5f + y) * tileSize;
     }
-
-    //method used to spawn enemies on player if they are camping i personally don't like so when done tutorial remove it
+    
     public Transform getTileFromPos(Vector3 position)
     {
         int x = Mathf.RoundToInt(position.x / tileSize + (currentMap.mapSize.x - 1) / 2f);

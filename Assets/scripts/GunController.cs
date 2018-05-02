@@ -5,12 +5,11 @@ using UnityEngine;
 public class GunController : MonoBehaviour {
 
     public Transform weaponHold; //empty game object to put the gun
-    public Gun[] allGuns; //default gun for the player to hold
+    public Gun[] allGuns;
     Gun equipped; //variable to see if player has a gun
 
     void Start()
     {
-
     }
 
     public void equipWeapon(Gun gunToEquip)

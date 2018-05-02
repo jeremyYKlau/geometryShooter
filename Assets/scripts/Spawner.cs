@@ -8,6 +8,10 @@ public class Spawner : MonoBehaviour {
 
     public Wave[] waves; //list of waves
     public Enemy enemy;
+    public Enemy[] enemies;
+    public Enemy boss;
+
+    //I want 4 types of enemies prefered or at least 3 but idk how to spawn them. Especially since i don't want them randomly spawning
 
     Character player;
     Transform playerT;
@@ -24,19 +28,11 @@ public class Spawner : MonoBehaviour {
     bool isDisabled;
 
     public event System.Action<int> onNewWave;
-    //camper check delete all class variables under this comment when done tutorial
-    float campCheckRate =2;
-    float campThresholdDistance = 1.5f;
-    float nextCampCheckTime;
-    Vector3 tempCampPosition;
-    bool isCamping;
 
     void Start()
     {
         player = FindObjectOfType<Player>();
         playerT = player.transform;
-        nextCampCheckTime = campCheckRate + Time.time; //camper check delete when done tutorial
-        tempCampPosition = playerT.position; //camper check delete when done tutorial
         player.onDeath += onPlayerDeath;
         map = FindObjectOfType<MapGenerator>();
         nextWave(); 
@@ -46,14 +42,6 @@ public class Spawner : MonoBehaviour {
     {
         if (!isDisabled)
         {
-            //camper check delete this entire if block
-            if (Time.time > nextCampCheckTime)
-            {
-                nextCampCheckTime = Time.time + campCheckRate;
-                isCamping = (Vector3.Distance(playerT.position, tempCampPosition) < campThresholdDistance);
-                tempCampPosition = playerT.position;
-            }
-
             if ((enemiesToSpawn > 0 || currentWave.infinite) && Time.time > spawnTime)
             {
                 enemiesToSpawn--;
@@ -136,11 +124,7 @@ public class Spawner : MonoBehaviour {
         float tileFlashSpeed = 4;
 
         Transform spawnTile = map.getRandomOpenTile();
-        //if camping spawn on the player which i personally dislike delete if i decide i dislike camp check
-        if (isCamping)
-        {
-            spawnTile = map.getTileFromPos(playerT.position);
-        }
+
         Material tileMat = spawnTile.GetComponent<Renderer>().material;
         Color initialColour = tileMat.color;
         Color flashColour = Color.red;
@@ -153,7 +137,9 @@ public class Spawner : MonoBehaviour {
             spawnTimer += Time.deltaTime;
             yield return null;
         }
-        Enemy spawnedEnemy = Instantiate(enemy, spawnTile.position + Vector3.up, Quaternion.identity) as Enemy;
+        //spawns an enemy from a list of enemies at random
+        Enemy spawnedEnemy = Instantiate(enemies[Random.Range(0,enemies.Length)], spawnTile.position + Vector3.up, Quaternion.identity) as Enemy;
+        //Enemy spawnedEnemy = Instantiate(enemy, spawnTile.position + Vector3.up, Quaternion.identity) as Enemy; //just spawns a single enemy probably use for boss enemy
         spawnedEnemy.onDeath += onEnemyDeath;
         spawnedEnemy.setStats(currentWave.moveSpeed, currentWave.damageToPlayer, currentWave.enemyHealth, currentWave.skinColor);
     }

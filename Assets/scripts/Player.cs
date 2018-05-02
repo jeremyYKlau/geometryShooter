@@ -24,12 +24,12 @@ public class Player : Character {
         gunControl = GetComponent<GunController>();
         viewCamera = Camera.main;
         FindObjectOfType<Spawner>().onNewWave += onNewWave;
+        gunControl.equipWeapon(0);
     }
 
     void onNewWave(int waveNum)
     {
         health = startHealth;
-        gunControl.equipWeapon(waveNum - 1);
     }
 	
     //for now movement is just there as a test I'll figure out how i want to actually do it later
@@ -72,6 +72,24 @@ public class Player : Character {
         if(transform.position.y < -10)
         {
             takeDamage(health);
+        }
+
+        //gunswitching
+        if (Input.GetKeyDown("1"))
+        {
+            gunControl.equipWeapon(0);
+        }
+        if (Input.GetKeyDown("2"))
+        {
+            gunControl.equipWeapon(1);
+        }
+        if (Input.GetKeyDown("3"))
+        {
+            gunControl.equipWeapon(2);
+        }
+        if (Input.GetKeyDown("4"))
+        {
+            gunControl.equipWeapon(3);
         }
     }
 

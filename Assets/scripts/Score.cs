@@ -7,7 +7,7 @@ public class Score : MonoBehaviour {
     public static int score { get; private set; }
     float lastEnemyKilledTIme;
     int streakCount;
-    float streakEndTime = 2;
+    float streakEndTime = 1.5f;
 
 	void Start () {
         Enemy.onDeathStatic += onEnemyKilled;
@@ -25,7 +25,7 @@ public class Score : MonoBehaviour {
             streakCount = 0;
         }
         lastEnemyKilledTIme = Time.time;
-        score += 5 + (int)(Mathf.Pow(2, streakCount));
+        score += 5 * Mathf.Max(1, streakCount); //re write how the scoring should work
     }
 
     void onPlayerDeath()

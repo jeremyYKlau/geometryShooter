@@ -32,8 +32,7 @@ public class Character : MonoBehaviour, IDamageable {
             die();
         }
     }
-
-    [ContextMenu("KMS")] //supposed to be a testing tool kills the character with a button added to the editor but it doesn't work
+    
     public virtual void die()
     {
         dead = true;
