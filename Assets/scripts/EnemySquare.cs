@@ -1,8 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemySquare : Enemy {
 
-	
+    protected override void Awake()
+    {
+        base.Awake();
+        enemyType = Type.Square;
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        
+        StartCoroutine(UpdatePath());
+    }
+    
 }

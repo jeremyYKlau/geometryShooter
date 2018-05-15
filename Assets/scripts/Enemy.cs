@@ -7,31 +7,33 @@ using UnityEngine.AI;
 public class Enemy : Character {
 
     //important to know whether the enemy is attacking chasing or idle using enums and a State
-    public enum State { Idle, Chasing, Attacking};
-    State currentState;
+    public enum State { Idle, Chasing, Attacking, Shooting};
+    public enum Type { Square, Sphere, Triangle, Boss};
+    protected Type enemyType;
+    protected State currentState;
 
     public ParticleSystem deathEffect;
     public static event System.Action onDeathStatic;
 
-    NavMeshAgent pathFinder; //a navmesh for path finding made with component->navigation->NavMesh and then baked
-    Transform target; //target position for ai to move towards
-    Character targetEntity; //the actual target character in this case player
+    protected NavMeshAgent pathFinder; //a navmesh for path finding made with component->navigation->NavMesh and then baked
+    protected Transform target; //target position for ai to move towards
+    protected Character targetEntity; //the actual target character in this case player
 
     //delete later just for changing colour when attacking which i don't want
-    Material skin;
-    Color originalColour;
+    protected Material skin;
+    protected Color originalColour;
 
-    float attackDistance = 1f;
-    float timeBetweenAtk = 1f;
-    float damage = 1;
+    protected float attackDistance = 1f;
+    protected float timeBetweenAtk = 1f;
+    protected float damage = 1;
 
-    float nextAttackTime;
-    float enemyCollisionRadius;
-    float targetCollisionRadius;
+    protected float nextAttackTime;
+    protected float enemyCollisionRadius;
+    protected float targetCollisionRadius;
 
-    bool hasTarget;
+    protected bool hasTarget;
 
-    void Awake()
+    protected virtual void Awake()
     {
         pathFinder = GetComponent<NavMeshAgent>();
 
@@ -60,8 +62,7 @@ public class Enemy : Character {
         {
             currentState = State.Chasing;
             targetEntity.onDeath += onTargetDeath;
-
-            StartCoroutine(UpdatePath());
+            
         }
 	}
 
@@ -119,7 +120,7 @@ public class Enemy : Character {
         }
     }
     //coroutine a small lunge when close to the player
-    IEnumerator Attack()
+    protected virtual IEnumerator Attack()
     {
         currentState = State.Attacking;
         //disable pathfinder coroutine so that it doesn't run at the same time as attack coroutine
@@ -156,7 +157,7 @@ public class Enemy : Character {
     }
 
     //Coroutine called Update path so the navigation Ai isn't updating path every frame
-    IEnumerator UpdatePath()
+    protected virtual IEnumerator UpdatePath()
     {
         float refreshRate = 0.25f;
         while(hasTarget)
