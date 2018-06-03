@@ -102,9 +102,9 @@ public class Enemy : Character {
         hasTarget = false;
         currentState = State.Idle;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    protected virtual void Update () {
         if (hasTarget)
         {
             if (Time.time > nextAttackTime)

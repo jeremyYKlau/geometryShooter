@@ -5,6 +5,13 @@ using UnityEngine.AI;
 
 public class EnemyTriangle : Enemy
 {
+    public Projectile projectile;
+    public Transform projectileSpawn;
+    public float turnRate = 1f;
+    public float muzzleVelocity = .5f;
+
+    float shotInterval;
+
     protected override void Awake()
     {
         base.Awake();
@@ -15,23 +22,36 @@ public class EnemyTriangle : Enemy
     {
         base.Start();
         currentState = State.Shooting;
-
-        //StartCoroutine(Firing());
+        StartCoroutine(Firing());
+        
     }
-    //a shooting method for the triangle enemy
+    protected override void Update()
+    {
+        //if has target look for and rotate towards target
+        if (hasTarget)
+        {
+            Vector3 targetDirection = target.position - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(targetDirection);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, turnRate * Time.deltaTime);
+        }
+
+        if (!hasTarget)
+        {
+            currentState = State.Idle;
+        }
+    }
+
+    //a shooting method for the triangle enemy not tracking so i can disable when player is dead using coroutines and enumerators
     protected virtual IEnumerator Firing()
     {
-        float refreshRate = 0.25f;
+        float refreshRate = .7f;
         while (hasTarget)
         {
             if (currentState == State.Shooting)
             {
-                Vector3 dirToTarget = (target.position - transform.position).normalized;
-                Vector3 targetPosition = target.position - dirToTarget * (enemyCollisionRadius + targetCollisionRadius + attackDistance / 2);
-                if (!dead)
-                {
-                    pathFinder.SetDestination(targetPosition);
-                }
+                Projectile newProjectile = Instantiate(projectile, projectileSpawn.position, projectileSpawn.rotation) as Projectile;
+                newProjectile.setSpeed(muzzleVelocity);
+              
             }
             yield return new WaitForSeconds(refreshRate);
         }

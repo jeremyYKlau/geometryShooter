@@ -17,5 +17,10 @@ public class EnemySquare : Enemy {
         
         StartCoroutine(UpdatePath());
     }
-    
+
+    protected override void Update()
+    {
+        base.Update();
+    }
+
 }

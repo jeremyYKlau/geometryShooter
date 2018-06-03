@@ -8,7 +8,7 @@ public class EnemySphere : Enemy
     protected override void Awake()
     {
         base.Awake();
-
+        enemyType = Type.Sphere;
     }
 
     protected override void Start()
@@ -17,6 +17,12 @@ public class EnemySphere : Enemy
 
         StartCoroutine(UpdatePath());
     }
+
+    protected override void Update()
+    {
+        base.Update();
+    }
+
     //coroutine updated for the sphere
     protected override IEnumerator Attack()
     {

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour {
-
-    public enum BulletType { sq, sph, tri, all};
+public class EnemyProjectile : MonoBehaviour
+{
+    
     public LayerMask collisionMask;
     float speed = 10; //bullet speed taken from gun object when used in game
-    float damage = 1; 
-    float lifeTime = 5; //time bullet stays in game before destroy
+    float damage = 1;
+    float lifeTime = 3; //time bullet stays in game before destroy
     float skinWidth = .2f; //small area to help bullet hit box
     public Color trailColour;
 
@@ -24,17 +24,19 @@ public class Projectile : MonoBehaviour {
         GetComponent<TrailRenderer>().material.SetColor("_TintColor", trailColour);
     }
 
-    public void setSpeed (float newSpeed)
+    public void setSpeed(float newSpeed)
     {
         speed = newSpeed;
     }
-	void Update () {
+    void Update()
+    {
         float moveDistance = speed * Time.deltaTime;
         checkCollisions(moveDistance);
         transform.Translate(Vector3.forward * moveDistance);
-	}
+    }
 
-    void checkCollisions(float moveDistance){
+    void checkCollisions(float moveDistance)
+    {
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, moveDistance + skinWidth, collisionMask, QueryTriggerInteraction.Collide))
