@@ -17,7 +17,7 @@ public class Character : MonoBehaviour, IDamageable {
     }
 
     //take hit method implemented from IDamageable interface for bullet damage
-    public virtual void takeHit(float damage, Vector3 hitPoint, Vector3 hitDir)
+    public virtual void takeHit(float damage, Vector3 hitPoint, Vector3 hitDir, int bulletType)
     {
         //do stuff here with hit var like a particle effect
         takeDamage(damage);
@@ -32,7 +32,7 @@ public class Character : MonoBehaviour, IDamageable {
             die();
         }
     }
-    
+
     public virtual void die()
     {
         dead = true;

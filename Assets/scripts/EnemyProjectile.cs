@@ -10,6 +10,9 @@ public class EnemyProjectile : MonoBehaviour
     float damage = 1;
     float lifeTime = 3; //time bullet stays in game before destroy
     float skinWidth = .2f; //small area to help bullet hit box
+
+    int bulletType = 0;
+
     public Color trailColour;
 
 
@@ -37,6 +40,7 @@ public class EnemyProjectile : MonoBehaviour
 
     void checkCollisions(float moveDistance)
     {
+
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, moveDistance + skinWidth, collisionMask, QueryTriggerInteraction.Collide))
@@ -51,7 +55,7 @@ public class EnemyProjectile : MonoBehaviour
         IDamageable damageableObject = c.GetComponent<IDamageable>();
         if (damageableObject != null)
         {
-            damageableObject.takeHit(damage, hitPoint, transform.forward); //when collides with a object do a damage calculation witout the raycasting
+            damageableObject.takeHit(damage, hitPoint, transform.forward, bulletType); //when collides with a object do a damage calculation witout the raycasting
         }
         GameObject.Destroy(gameObject);
     }

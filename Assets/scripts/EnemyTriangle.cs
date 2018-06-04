@@ -15,7 +15,8 @@ public class EnemyTriangle : Enemy
     protected override void Awake()
     {
         base.Awake();
-        enemyType = Type.Triangle;
+        //enemyType = Type.Triangle;
+        enemyType = 3;
     }
 
     protected override void Start()

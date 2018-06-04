@@ -5,6 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour {
 
     public enum BulletType { sq, sph, tri, all};
+    public int bulletType;
     public LayerMask collisionMask;
     float speed = 10; //bullet speed taken from gun object when used in game
     float damage = 1; 
@@ -49,7 +50,7 @@ public class Projectile : MonoBehaviour {
         IDamageable damageableObject = c.GetComponent<IDamageable>();
         if (damageableObject != null)
         {
-            damageableObject.takeHit(damage, hitPoint, transform.forward); //when collides with a object do a damage calculation witout the raycasting
+            damageableObject.takeHit(damage, hitPoint, transform.forward, bulletType); //when collides with a object do a damage calculation witout the raycasting
         }
         GameObject.Destroy(gameObject);
     }

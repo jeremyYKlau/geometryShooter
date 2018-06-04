@@ -8,8 +8,10 @@ public class Enemy : Character {
 
     //important to know whether the enemy is attacking chasing or idle using enums and a State
     public enum State { Idle, Chasing, Attacking, Shooting};
-    public enum Type { Square, Sphere, Triangle, Boss};
-    protected Type enemyType;
+    //public enum Type { Square, Sphere, Triangle, Boss};
+    //protected Type enemyType;
+    public int enemyType;
+
     protected State currentState;
 
     public ParticleSystem deathEffect;
@@ -62,13 +64,16 @@ public class Enemy : Character {
         {
             currentState = State.Chasing;
             targetEntity.onDeath += onTargetDeath;
-            
         }
 	}
 
-    public override void takeHit(float damage, Vector3 hitPoint, Vector3 hitDir)
+    public override void takeHit(float damage, Vector3 hitPoint, Vector3 hitDir, int bulletType)
     {
         AudioManager.instance.playSound("Impact", transform.position);
+        if(bulletType != enemyType)
+        {
+            damage = damage / 2;
+        }
         if (damage >= health)
         {
             if (onDeathStatic != null)
@@ -78,7 +83,8 @@ public class Enemy : Character {
             AudioManager.instance.playSound("Enemy Death", transform.position);
             Destroy(Instantiate(deathEffect.gameObject, hitPoint, Quaternion.FromToRotation(Vector3.forward, hitDir)), deathEffect.main.startLifetime.constant);
         }
-        base.takeHit(damage, hitPoint, hitDir);
+        //base.takeHit(damage, hitPoint, hitDir);
+        takeDamage(damage); //bullet damage based off bullet type
     }
 
     public void setStats(float moveSpeed, int damageToKill, float charHealth, Color skinColour)

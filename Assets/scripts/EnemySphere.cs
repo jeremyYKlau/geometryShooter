@@ -8,7 +8,8 @@ public class EnemySphere : Enemy
     protected override void Awake()
     {
         base.Awake();
-        enemyType = Type.Sphere;
+        //enemyType = Type.Sphere;
+        enemyType = 2;
     }
 
     protected override void Start()

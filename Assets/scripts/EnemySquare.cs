@@ -8,7 +8,8 @@ public class EnemySquare : Enemy {
     protected override void Awake()
     {
         base.Awake();
-        enemyType = Type.Square;
+        //enemyType = Type.Square;
+        enemyType = 1;
     }
 
     protected override void Start()
