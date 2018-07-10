@@ -83,27 +83,21 @@ public class Enemy : Character {
             AudioManager.instance.playSound("Enemy Death", transform.position);
             Destroy(Instantiate(deathEffect.gameObject, hitPoint, Quaternion.FromToRotation(Vector3.forward, hitDir)), deathEffect.main.startLifetime.constant);
         }
-        //base.takeHit(damage, hitPoint, hitDir);
         takeDamage(damage); //bullet damage based off bullet type
     }
 
-    public void setStats(float moveSpeed, int damageToKill, float charHealth, Color skinColour)
+    public void setStats(float moveSpeed, int damageToKill, float charHealth)
     {
         var main = deathEffect.main;
         pathFinder.speed = moveSpeed;
-        if (hasTarget)
-        {
-            damage = (int)Mathf.Ceil(targetEntity.startHealth / damageToKill); //change to just damage = damage when finished this is just some janky thing to make it hits to kill player and not damage
-        }
-        startHealth = charHealth;
 
-        main.startColor = new Color(skinColour.r, skinColour.g, skinColour.b, 1);
+        startHealth = charHealth;
+        
         skin = GetComponent<Renderer>().material;
-        skin.color = skinColour;
         originalColour = skin.color;//probably delete after done tutorial
     }
 
-    void onTargetDeath()
+    public void onTargetDeath()
     {
         hasTarget = false;
         currentState = State.Idle;
@@ -138,8 +132,7 @@ public class Enemy : Character {
 
         float percent = 0;
         float attackSpeed = 2;
-
-        skin.color = Color.black;//proably delete after done tutorial
+        
         bool hasDamaged = false;
 
         while (percent <= 1)
@@ -155,8 +148,7 @@ public class Enemy : Character {
 
             yield return null;
         }
-
-        skin.color = originalColour;//again delete after tutorial
+        
         currentState = State.Chasing;
         //reenable pathfinder once attack is done
         pathFinder.enabled = true;

@@ -19,8 +19,11 @@ public class Spawner : MonoBehaviour {
     Wave currentWave;
     int currentWaveNum;
 
+    int enemiesKilled;//used to get health for kills for the player
     int enemiesToSpawn; //amount of enemies to spawn
     int enemiesAlive; //count to see how many enemies are alive if it hits 0 spawn next wave
+
+    int bossNum = 0;//count to make sure no boss is spawned more then once
     float spawnTime; //time between each enemy spawn
 
     MapGenerator map;
@@ -42,6 +45,11 @@ public class Spawner : MonoBehaviour {
     {
         if (!isDisabled)
         {
+            if ((currentWaveNum != 1) && ((currentWaveNum % 5) == 0) && (bossNum == 0))
+            {
+                Debug.Log("Here comes boss enemy");
+                spawnBoss();
+            }
             if ((enemiesToSpawn > 0 || currentWave.infinite) && Time.time > spawnTime)
             {
                 enemiesToSpawn--;
@@ -72,10 +80,15 @@ public class Spawner : MonoBehaviour {
     void onEnemyDeath ()
     {
         enemiesAlive --;
+        enemiesKilled++;
         if(enemiesAlive == 0)
         {
             //set a delay timer hopefully in the future
             nextWave();
+        }
+        else if((enemiesKilled % 5 == 0) && (enemiesKilled != 0))
+        {
+            player.health +=(1);
         }
     }
 
@@ -101,7 +114,9 @@ public class Spawner : MonoBehaviour {
                 onNewWave(currentWaveNum);
             }
         }
+        bossNum = 0;
         resetPlayerPos();
+        Debug.Log(currentWaveNum);
     }
 
     [System.Serializable]
@@ -115,7 +130,16 @@ public class Spawner : MonoBehaviour {
         public float moveSpeed;
         public int damageToPlayer;
         public float enemyHealth;
-        public Color skinColor;
+    }
+
+    void spawnBoss()
+    {
+        bossNum += 1;
+        Transform spawnTile = map.getRandomOpenTile();
+        Enemy spawnedBoss = Instantiate(enemy, spawnTile.position + Vector3.up, Quaternion.identity) as Enemy; //just spawns a single enemy probably use for boss enemy
+        spawnedBoss.onDeath += onEnemyDeath;
+        spawnedBoss.setStats(currentWave.moveSpeed * 0.4f, currentWave.damageToPlayer, currentWave.enemyHealth * 5);
+        enemiesAlive++;
     }
 
     IEnumerator SpawnEnemy()
@@ -139,8 +163,7 @@ public class Spawner : MonoBehaviour {
         }
         //spawns an enemy from a list of enemies at random
         Enemy spawnedEnemy = Instantiate(enemies[Random.Range(0,enemies.Length)], spawnTile.position + Vector3.up, Quaternion.identity) as Enemy;
-        //Enemy spawnedEnemy = Instantiate(enemy, spawnTile.position + Vector3.up, Quaternion.identity) as Enemy; //just spawns a single enemy probably use for boss enemy
         spawnedEnemy.onDeath += onEnemyDeath;
-        spawnedEnemy.setStats(currentWave.moveSpeed, currentWave.damageToPlayer, currentWave.enemyHealth, currentWave.skinColor);
+        spawnedEnemy.setStats(currentWave.moveSpeed, currentWave.damageToPlayer, currentWave.enemyHealth);
     }
 }

@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class EnemySphere : Enemy
 {
+    float forceAdjust = 0.05f;
+    Rigidbody sphereBody;
     protected override void Awake()
     {
         base.Awake();
@@ -15,7 +17,8 @@ public class EnemySphere : Enemy
     protected override void Start()
     {
         base.Start();
-
+        sphereBody = this.GetComponent<Rigidbody>();
+        //this is going to be different for the sphere it will use a force to launch itself at the player instead and roll around
         StartCoroutine(UpdatePath());
     }
 
@@ -24,7 +27,8 @@ public class EnemySphere : Enemy
         base.Update();
     }
 
-    //coroutine updated for the sphere
+    //coroutine updated for the sphere just make it into a new updatepath coroutine and put the percent thing with damage in that coroutine instead
+    //remove this attack coroutine after the sphere updatepath attack merge 
     protected override IEnumerator Attack()
     {
         currentState = State.Attacking;
@@ -38,6 +42,9 @@ public class EnemySphere : Enemy
         bool hasDamaged = false;
         float percent = 0;
         float attackSpeed = 2;
+
+        //doesn't work but something i would like to include
+        //sphereBody.AddForce(dirToTarget * sphereBody.mass * forceAdjust, ForceMode.Impulse);
 
         while (percent <= 1)
         {
@@ -57,4 +64,23 @@ public class EnemySphere : Enemy
         //reenable pathfinder once attack is done
         pathFinder.enabled = true;
     }
+    /*
+    //Coroutine called Update path so the navigation Ai isn't updating path every frame
+    protected override IEnumerator UpdatePath()
+    {
+        float refreshRate = 0.25f;
+        while (hasTarget)
+        {
+            if (currentState == State.Chasing)
+            {
+                Vector3 dirToTarget = (target.position - transform.position).normalized;
+                Vector3 targetPosition = target.position - dirToTarget * (enemyCollisionRadius + targetCollisionRadius + attackDistance / 2);
+                if (!dead)
+                {
+                    pathFinder.SetDestination(targetPosition);
+                }
+            }
+            yield return new WaitForSeconds(refreshRate);
+        }
+    }*/
 }

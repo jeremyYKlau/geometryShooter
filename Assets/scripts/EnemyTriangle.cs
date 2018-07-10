@@ -32,6 +32,7 @@ public class EnemyTriangle : Enemy
         if (hasTarget)
         {
             Vector3 targetDirection = target.position - transform.position;
+            //targetDirection.x = targetDirection.x + .5f;//for some reason this is needed or else the triangle doesn't aim properly, i bet its because of how i imported the blender model
             Quaternion rotation = Quaternion.LookRotation(targetDirection);
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, turnRate * Time.deltaTime);
         }

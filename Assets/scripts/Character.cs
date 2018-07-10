@@ -6,7 +6,7 @@ public class Character : MonoBehaviour, IDamageable {
     
     public float startHealth;
 
-    public float health { get; protected set; }
+    public float health { get; set; }
     protected bool dead;
 
     public event System.Action onDeath;
