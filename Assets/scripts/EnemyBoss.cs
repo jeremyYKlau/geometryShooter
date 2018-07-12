@@ -5,7 +5,9 @@ using UnityEngine;
 public class EnemyBoss : Enemy {
 
     public Projectile projectile;
-    public Transform projectileSpawn;
+    public Transform projectileSpawn1;
+    public Transform projectileSpawn2;
+    public Transform projectileSpawn3;
     public float turnRate = 1f;
     public float muzzleVelocity = .5f;
 
@@ -39,8 +41,12 @@ public class EnemyBoss : Enemy {
         {
             if (currentState == State.Chasing)
             {
-                Projectile newProjectile = Instantiate(projectile, projectileSpawn.position, projectileSpawn.rotation) as Projectile;
-                newProjectile.setSpeed(muzzleVelocity);
+                Projectile newProjectile1 = Instantiate(projectile, projectileSpawn1.position, projectileSpawn1.rotation) as Projectile;
+                Projectile newProjectile2 = Instantiate(projectile, projectileSpawn2.position, projectileSpawn2.rotation) as Projectile;
+                Projectile newProjectile3 = Instantiate(projectile, projectileSpawn3.position, projectileSpawn3.rotation) as Projectile;
+                newProjectile1.setSpeed(muzzleVelocity);
+                newProjectile2.setSpeed(muzzleVelocity);
+                newProjectile3.setSpeed(muzzleVelocity);
             }
             yield return new WaitForSeconds(refreshRate);
         }

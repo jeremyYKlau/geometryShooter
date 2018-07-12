@@ -87,10 +87,6 @@ public class Player : Character {
         {
             gunControl.equipWeapon(2);
         }
-        if (Input.GetKeyDown("4"))
-        {
-            gunControl.equipWeapon(3);
-        }
     }
 
     public override void die()

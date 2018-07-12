@@ -86,7 +86,7 @@ public class Spawner : MonoBehaviour {
             //set a delay timer hopefully in the future
             nextWave();
         }
-        else if((enemiesKilled % 5 == 0) && (enemiesKilled != 0))
+        else if((enemiesKilled % 5 == 0) && (enemiesKilled != 0) && (player.health!=player.startHealth))
         {
             player.health +=(1);
         }
@@ -116,7 +116,6 @@ public class Spawner : MonoBehaviour {
         }
         bossNum = 0;
         resetPlayerPos();
-        Debug.Log(currentWaveNum);
     }
 
     [System.Serializable]
@@ -138,7 +137,7 @@ public class Spawner : MonoBehaviour {
         Transform spawnTile = map.getRandomOpenTile();
         Enemy spawnedBoss = Instantiate(enemy, spawnTile.position + Vector3.up, Quaternion.identity) as Enemy; //just spawns a single enemy probably use for boss enemy
         spawnedBoss.onDeath += onEnemyDeath;
-        spawnedBoss.setStats(currentWave.moveSpeed * 0.4f, currentWave.damageToPlayer, currentWave.enemyHealth * 5);
+        spawnedBoss.setStats(currentWave.moveSpeed*0.75f, currentWave.damageToPlayer, currentWaveNum * 2);
         enemiesAlive++;
     }
 

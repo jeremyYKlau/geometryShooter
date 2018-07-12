@@ -94,7 +94,6 @@ public class Enemy : Character {
         startHealth = charHealth;
         
         skin = GetComponent<Renderer>().material;
-        originalColour = skin.color;//probably delete after done tutorial
     }
 
     public void onTargetDeath()

@@ -92,7 +92,7 @@ public class Gun : MonoBehaviour {
                 Projectile newProjectile = Instantiate(projectile, projectileSpawn[i].position, projectileSpawn[i].rotation) as Projectile; //breaks game here and doesn't play sound but won't be a problem when i remove guns changing per round and change audio still very weird error
                 newProjectile.setSpeed(muzzleVelocity);
             }
-            muzzleflash.activate();
+            //muzzleflash.activate(); //this line is for muzzle flash but I don't plan on using it
 
             transform.localPosition -= Vector3.forward * Random.Range(minMaxKickBack.x, minMaxKickBack.y); //for recoil but may remove if i don't want
             recoilAngle += Random.Range(minMaxRecoil.x, minMaxRecoil.y);
